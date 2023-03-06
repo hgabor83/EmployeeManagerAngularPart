@@ -21,14 +21,16 @@ export class AppComponent implements OnInit {
   }
 
   public getEmployees(): void {
-    this.employeeService.getEmployees().subscribe(
-      (response: Employee[]) => {
+    this.employeeService.getEmployees().subscribe({
+      next: (response: Employee[]) => {
         this.employees = response;
         console.log(this.employees);
       },
-      (error: HttpErrorResponse) => {
-        alert(error.message);
-      }
+      error:
+        (error: HttpErrorResponse) => {
+          alert(error.message);
+        }
+    }
     )
   }
 
@@ -57,44 +59,53 @@ export class AppComponent implements OnInit {
   public onAddEmployee(addForm: NgForm): void {
     document.getElementById('add-employee-form')?.click();
     // value is json representation of the data
-    this.employeeService.addEmployee(addForm.value).subscribe(
-      (response: Employee) => {
-        console.log("On add: ");
-        console.log(response);
-        this.getEmployees();
-        addForm.reset();
-      },
-      (error: HttpErrorResponse) => {
-        alert(error.message);
-        addForm.reset();
-      }
-    );
+    this.employeeService.addEmployee(addForm.value).subscribe({
+      next:
+        (response: Employee) => {
+          console.log("On add: ");
+          console.log(response);
+          this.getEmployees();
+          addForm.reset();
+        },
+      error:
+        (error: HttpErrorResponse) => {
+          alert(error.message);
+          addForm.reset();
+        }
+    }
+    )
   }
 
   public onUpdateEmployee(employee: Employee): void {
-    this.employeeService.updateEmployee(employee).subscribe(
-      (response: Employee) => {
-        console.log("On update: ");
-        console.log(response);
-        this.getEmployees();
-      },
-      (error: HttpErrorResponse) => {
-        alert(error.message);
-      }
-    );
+    this.employeeService.updateEmployee(employee).subscribe({
+      next:
+        (response: Employee) => {
+          console.log("On update: ");
+          console.log(response);
+          this.getEmployees();
+        },
+      error:
+        (error: HttpErrorResponse) => {
+          alert(error.message);
+        }
+    }
+    )
   }
 
   public onDeleteEmployee(employeeId: number): void {
-    this.employeeService.deleteEmployee(employeeId).subscribe(
-      (response: void) => {
-        console.log("On delete: ");
-        console.log(response);
-        this.getEmployees();
-      },
-      (error: HttpErrorResponse) => {
-        alert(error.message);
-      }
-    );
+    this.employeeService.deleteEmployee(employeeId).subscribe({
+      next:
+        (response: void) => {
+          console.log("On delete: ");
+          console.log(response);
+          this.getEmployees();
+        },
+      error:
+        (error: HttpErrorResponse) => {
+          alert(error.message);
+        }
+    }
+    )
   }
 
   public searchEmployees(key: string): void {
